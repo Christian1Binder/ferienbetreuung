@@ -1,73 +1,71 @@
-# React + TypeScript + Vite
+# AWO Bezirksjugendwerk Mittelfranken - Online-Lernplattform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Eine modulare Webplattform für Online-Weiterbildungen, entwickelt für das Bezirksjugendwerk der AWO Mittelfranken.
+Zunächst konzipiert für die Schulung von Mitarbeitenden der Ferienbetreuung.
 
-Currently, two official plugins are available:
+## Funktionen
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+*   **Modularer Aufbau:** Unterstützung für beliebig viele Kurse, Module und Lektionen.
+*   **Interaktives Lernen:** Integration von Videos und anschließenden Quizfragen (Single/Multiple Choice).
+*   **Fortschrittstracking:** Persistente Speicherung des Lernfortschritts pro Nutzer (LocalStorage).
+*   **Zertifikat:** Automatische Erstellung eines PDF-Teilnahmezertifikats nach erfolgreichem Kursabschluss.
+*   **Admin-Bereich:** Einfache Verwaltung von Kursinhalten direkt im Browser (Daten werden lokal simuliert/gespeichert).
+*   **Responsive Design:** Optimiert für Smartphone, Tablet und Desktop (Mobile First).
+*   **Barrierearm:** Klare Struktur, große Buttons, kontrastreiche Farben (AWO Design).
 
-## React Compiler
+## Projektstruktur
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Das Projekt basiert auf React (Vite), TypeScript und Tailwind CSS.
 
-## Expanding the ESLint configuration
+*   `src/components/ui`: Wiederverwendbare UI-Komponenten (Button, Card, Input, ProgressBar).
+*   `src/components/layout`: Layout-Komponenten (Header, Sidebar).
+*   `src/components/quiz`: Quiz-Logik und Darstellung.
+*   `src/pages`: Die verschiedenen Ansichten der App (Welcome, Dashboard, CourseView, LessonView, Certificate, AdminDashboard).
+*   `src/store`: Zustand der Anwendung (Zustand Store mit Persistenz).
+*   `src/types`: TypeScript Definitionen.
+*   `src/data`: Initiale Mock-Daten (Kurs "Ferienbetreuung").
+*   `src/utils`: Hilfsfunktionen (z.B. PDF Generierung).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Installation & Start
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Voraussetzung: Node.js (Version 16+ empfohlen).
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1.  Repository klonen oder herunterladen.
+2.  In das Projektverzeichnis wechseln.
+3.  Abhängigkeiten installieren:
+    ```bash
+    npm install
+    ```
+4.  Entwicklungsserver starten:
+    ```bash
+    npm run dev
+    ```
+5.  Die Anwendung ist unter `http://localhost:5173` erreichbar.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Nutzung
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Als Teilnehmer
+1.  Geben Sie auf der Startseite Ihren Namen und optional Ihre Einrichtung ein.
+2.  Im Dashboard sehen Sie Ihre Kurse und den aktuellen Fortschritt.
+3.  Wählen Sie einen Kurs und bearbeiten Sie die Module/Lektionen nacheinander.
+4.  Nach erfolgreichem Abschluss aller Lektionen können Sie Ihr Zertifikat herunterladen.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Als Admin
+1.  Klicken Sie im Menü auf "Admin".
+2.  Hier können Sie Kurstitel, Beschreibungen und Lektionen bearbeiten oder neue hinzufügen.
+3.  Änderungen werden lokal im Browser gespeichert (für diese Demo-Version).
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Tech Stack
+
+*   [React](https://react.dev/)
+*   [TypeScript](https://www.typescriptlang.org/)
+*   [Vite](https://vitejs.dev/)
+*   [Tailwind CSS](https://tailwindcss.com/)
+*   [Zustand](https://github.com/pmndrs/zustand) (State Management)
+*   [React Router](https://reactrouter.com/) (Routing)
+*   [jsPDF](https://github.com/parallax/jsPDF) (PDF Generierung)
+*   [Lucide React](https://lucide.dev/) (Icons)
+
+## Design
+
+Die Farben und Typografie orientieren sich am Corporate Design der AWO (Rot #E2001A).
