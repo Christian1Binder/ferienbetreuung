@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, GraduationCap, LogOut, X, Settings } from 'lucide-react';
+import { LayoutDashboard, BookOpen, GraduationCap, LogOut, X } from 'lucide-react';
 import { clsx } from 'clsx';
 import { useAppStore } from '../../store/useAppStore';
 
@@ -16,7 +16,6 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
     { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
     { label: 'Meine Kurse', icon: BookOpen, path: '/course/ferienbetreuung' },
     { label: 'Zertifikate', icon: GraduationCap, path: '/certificate' },
-    { label: 'Admin', icon: Settings, path: '/admin' },
   ];
 
   const isActive = (path: string) => location.pathname === path || (path !== '/dashboard' && location.pathname.startsWith(path));
