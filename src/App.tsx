@@ -5,7 +5,6 @@ import { Dashboard } from './pages/Dashboard';
 import { CourseView } from './pages/CourseView';
 import { LessonView } from './pages/LessonView';
 import { Certificate } from './pages/Certificate';
-import { AdminDashboard } from './pages/admin/AdminDashboard';
 
 function App() {
   return (
@@ -18,7 +17,6 @@ function App() {
           <Route path="/course/:courseId" element={<CourseView />} />
           <Route path="/course/:courseId/lesson/:lessonId" element={<LessonView />} />
           <Route path="/certificate" element={<Certificate />} />
-          <Route path="/admin" element={<AdminDashboard />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
