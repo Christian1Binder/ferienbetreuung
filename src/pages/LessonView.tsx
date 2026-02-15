@@ -88,6 +88,15 @@ export function LessonView() {
                 // For demo, we rely on user clicking "Mark as watched" or assume watched after some time.
              }}
            ></iframe>
+        ) : lesson.videoUrl && (lesson.videoUrl.endsWith('.mp4') || lesson.videoUrl.endsWith('.webm') || lesson.videoUrl.endsWith('.ogg')) ? (
+           <video
+             controls
+             className="w-full h-full"
+             onEnded={handleVideoEnd}
+           >
+             <source src={lesson.videoUrl} type="video/mp4" />
+             Ihr Browser unterstützt das Video-Tag nicht.
+           </video>
         ) : (
            <div className="text-white text-center p-8">
              <PlayCircle className="w-16 h-16 mx-auto mb-4 opacity-80" />
