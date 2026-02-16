@@ -94,7 +94,14 @@ export function LessonView() {
              className="w-full h-full"
              onEnded={handleVideoEnd}
            >
-             <source src={lesson.videoUrl} type="video/mp4" />
+             <source
+               src={lesson.videoUrl}
+               type={
+                 lesson.videoUrl.endsWith('.webm') ? 'video/webm' :
+                 lesson.videoUrl.endsWith('.ogg') ? 'video/ogg' :
+                 'video/mp4'
+               }
+             />
              Ihr Browser unterstützt das Video-Tag nicht.
            </video>
         ) : (
