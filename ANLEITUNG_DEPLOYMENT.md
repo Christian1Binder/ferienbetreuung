@@ -12,7 +12,7 @@ Sie finden in diesem Ordner bereits einen Unterordner namens `dist`. Dieser enth
 
 ## Bearbeiten der Kursinhalte (ohne Neu-Erstellen)
 
-Im Ordner `dist` finden Sie eine Datei namens `courses.json`. In dieser Datei sind alle Kurse, Lektionen und Fragen gespeichert.
+Im Ordner `dist` finden Sie eine Datei namens `courses.js`. In dieser Datei sind alle Kurse, Lektionen und Fragen gespeichert.
 
 *   Sie können diese Datei mit jedem Texteditor öffnen und bearbeiten.
 *   Sie können Texte ändern, neue Lektionen hinzufügen oder Video-Links anpassen.

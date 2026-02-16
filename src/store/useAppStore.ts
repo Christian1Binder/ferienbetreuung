@@ -24,17 +24,28 @@ export const useAppStore = create<AppStore>()(
       fetchCourses: async () => {
         set({ isLoadingCourses: true, errorCourses: null });
         try {
-          const response = await fetch('courses.json');
-          if (!response.ok) {
-            throw new Error('Fehler beim Laden der Kursdaten');
+          // Check if coursesData is defined in the window object (injected via courses.js)
+          if (typeof window !== 'undefined' && window.coursesData) {
+            set({ courses: window.coursesData, isLoadingCourses: false });
+          } else {
+             // Fallback to fetch if window.coursesData is not available (dev mode mostly)
+             try {
+                const response = await fetch('courses.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    set({ courses: data, isLoadingCourses: false });
+                    return;
+                }
+             } catch (e) {
+                 // Ignore fetch error and proceed to throw
+             }
+             throw new Error('Keine Kursdaten gefunden (window.coursesData oder courses.json fehlgeschlagen).');
           }
-          const data = await response.json();
-          set({ courses: data, isLoadingCourses: false });
         } catch (error) {
           console.error('Failed to load courses:', error);
           set({
             isLoadingCourses: false,
-            errorCourses: 'Kursdaten konnten nicht geladen werden. Bitte prüfen Sie die courses.json Datei.'
+            errorCourses: 'Kursdaten konnten nicht geladen werden. Bitte prüfen Sie die courses.js Datei.'
           });
         }
       },

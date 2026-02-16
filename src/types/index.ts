@@ -50,3 +50,9 @@ export interface UserState {
   completedLessons: string[]; // List of IDs of completed lessons
   quizScores: Record<string, number>; // Lesson ID -> Score (number of correct answers)
 }
+
+declare global {
+  interface Window {
+    coursesData?: Course[];
+  }
+}

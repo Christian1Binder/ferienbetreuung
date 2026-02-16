@@ -1,4 +1,4 @@
-[
+window.coursesData = [
   {
     "id": "ferienbetreuung",
     "title": "Ferienbetreuung",
@@ -133,4 +133,4 @@
       }
     ]
   }
-]
+];
