@@ -29,11 +29,11 @@ Damit das Video in einer Lektion angezeigt wird, müssen wir der Plattform sagen
     videoUrl: 'https://www.youtube.com/embed/...',
     ```
 
-4.  Ändern Sie diese Zeile so, dass sie auf Ihr Video zeigt. Der Pfad beginnt immer mit `/videos/`.
+4.  Ändern Sie diese Zeile so, dass sie auf Ihr Video zeigt. Verwenden Sie den Pfad `videos/` (ohne führenden Schrägstrich), damit es auch in Unterordnern funktioniert.
 
     **Beispiel:** Wenn Ihre Datei `sicherheit.mp4` heißt:
     ```typescript
-    videoUrl: '/videos/sicherheit.mp4',
+    videoUrl: 'videos/sicherheit.mp4',
     ```
 
 5.  Speichern Sie die Datei.
@@ -45,7 +45,7 @@ Starten Sie die Anwendung neu oder aktualisieren Sie die Seite im Browser. Wenn 
 ## Zusammenfassung der Pfade
 
 *   **Speicherort der Datei:** `public/videos/mein-video.mp4`
-*   **Eintrag in der Datei:** `/videos/mein-video.mp4`
+*   **Eintrag in der Datei:** `videos/mein-video.mp4`
 
 ---
 *Hinweis: Wenn Sie YouTube-Videos einbinden möchten, können Sie an der gleichen Stelle einfach den YouTube-Link einfügen (z.B. `https://www.youtube.com/embed/VIDEO_ID`).*
