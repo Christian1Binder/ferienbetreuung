@@ -11,6 +11,13 @@ node_modules
 dist-ssr
 *.local
 
+# Since we build to root, ignore everything EXCEPT what we need?
+# No, we just need to ignore standard artifacts.
+# index.html (built) is also source now (in root)?
+# No, source index.html is in src/
+# Built index.html is in root (where .gitignore is).
+# We want to commit the built index.html.
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

@@ -10,14 +10,13 @@ Diese Anleitung erklärt Schritt für Schritt, wie Sie eigene Videos in die Lern
 ## 2. Video ablegen
 
 1.  Öffnen Sie den Projektordner auf Ihrem Computer.
-2.  Navigieren Sie in den Unterordner `public`.
-3.  Dort finden Sie nun einen neuen Ordner namens `videos`.
-4.  Kopieren Sie Ihre Videodatei in diesen Ordner (`public/videos/`).
+2.  Dort finden Sie einen Ordner namens `videos`.
+3.  Kopieren Sie Ihre Videodatei in diesen Ordner.
 
 ## 3. Video verlinken
 
 Damit das Video in einer Lektion angezeigt wird, müssen wir der Plattform sagen, wo es liegt.
-Da Sie die fertig kompilierte Version nutzen, machen Sie das in der Datei `courses.js` im `dist`-Ordner (oder im Hauptverzeichnis).
+Das machen Sie in der Datei `courses.js` im Hauptverzeichnis.
 
 1.  Öffnen Sie die Datei `courses.js` mit einem Texteditor (z.B. Notepad, TextEdit oder VS Code).
 2.  Suchen Sie die Lektion, zu der Sie das Video hinzufügen möchten. Suchen Sie nach dem Titel der Lektion (z.B. "Mittagessen und Pausen").
