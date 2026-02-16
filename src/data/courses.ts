@@ -15,7 +15,7 @@ export const courses: Course[] = [
             order: 1,
             title: 'Begrüßung und Ankunft',
             description: 'Wie gestalten wir den Start in den Tag für die Kinder und Eltern?',
-            videoUrl: 'video/ferienbetreuung_1.mp4', // Placeholder
+            videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', // Placeholder
             content: 'Der erste Eindruck zählt. Seien Sie pünktlich und freundlich.',
             quiz: {
               id: 'quiz-1-1',

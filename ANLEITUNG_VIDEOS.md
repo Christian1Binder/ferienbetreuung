@@ -16,13 +16,14 @@ Diese Anleitung erklärt Schritt für Schritt, wie Sie eigene Videos in die Lern
 
 ## 3. Video verlinken
 
-Damit das Video in einer Lektion angezeigt wird, müssen wir der Plattform sagen, wo es liegt. Das machen wir in der Datei `src/data/courses.ts`.
+Damit das Video in einer Lektion angezeigt wird, müssen wir der Plattform sagen, wo es liegt.
+Da Sie die fertig kompilierte Version nutzen, machen Sie das in der Datei `courses.json` im `dist`-Ordner (oder im Hauptverzeichnis).
 
-1.  Öffnen Sie die Datei `src/data/courses.ts` mit einem Texteditor (z.B. Notepad, TextEdit oder VS Code).
+1.  Öffnen Sie die Datei `courses.json` mit einem Texteditor (z.B. Notepad, TextEdit oder VS Code).
 2.  Suchen Sie die Lektion, zu der Sie das Video hinzufügen möchten. Suchen Sie nach dem Titel der Lektion (z.B. "Mittagessen und Pausen").
 3.  In dem Block für diese Lektion finden Sie eine Zeile, die so aussieht:
-    ```typescript
-    videoUrl: '',
+    ```json
+    "videoUrl": "",
     ```
     oder vielleicht:
     ```typescript
@@ -32,8 +33,8 @@ Damit das Video in einer Lektion angezeigt wird, müssen wir der Plattform sagen
 4.  Ändern Sie diese Zeile so, dass sie auf Ihr Video zeigt. Verwenden Sie den Pfad `videos/` (ohne führenden Schrägstrich), damit es auch in Unterordnern funktioniert.
 
     **Beispiel:** Wenn Ihre Datei `sicherheit.mp4` heißt:
-    ```typescript
-    videoUrl: 'videos/sicherheit.mp4',
+    ```json
+    "videoUrl": "videos/sicherheit.mp4",
     ```
 
 5.  Speichern Sie die Datei.

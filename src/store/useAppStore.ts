@@ -6,6 +6,9 @@ import { courses as initialCourses } from '../data/courses';
 interface AppStore {
   user: UserState | null;
   courses: Course[];
+  isLoadingCourses: boolean;
+  errorCourses: string | null;
+  fetchCourses: () => Promise<void>;
   login: (name: string, facility?: string) => void;
   logout: () => void;
   completeLesson: (lessonId: string, score: number) => void;
@@ -16,6 +19,25 @@ export const useAppStore = create<AppStore>()(
     (set) => ({
       user: null,
       courses: initialCourses,
+      isLoadingCourses: false,
+      errorCourses: null,
+      fetchCourses: async () => {
+        set({ isLoadingCourses: true, errorCourses: null });
+        try {
+          const response = await fetch('courses.json');
+          if (!response.ok) {
+            throw new Error('Fehler beim Laden der Kursdaten');
+          }
+          const data = await response.json();
+          set({ courses: data, isLoadingCourses: false });
+        } catch (error) {
+          console.error('Failed to load courses:', error);
+          set({
+            isLoadingCourses: false,
+            errorCourses: 'Kursdaten konnten nicht geladen werden. Bitte prüfen Sie die courses.json Datei.'
+          });
+        }
+      },
       login: (name, facility) => set({
         user: {
           name,
