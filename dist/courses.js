@@ -13,7 +13,7 @@ window.coursesData = [
             "order": 1,
             "title": "Begrüßung und Ankunft",
             "description": "Wie gestalten wir den Start in den Tag für die Kinder und Eltern?",
-            "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+            "videoUrl": "videos/ferienbetreuung_1.mp4",
             "content": "Der erste Eindruck zählt. Seien Sie pünktlich und freundlich.",
             "quiz": {
               "id": "quiz-1-1",
