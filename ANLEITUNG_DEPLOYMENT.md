@@ -4,15 +4,14 @@ Diese Seite funktioniert als statische Webseite ohne Node.js-Server.
 
 ## Schnellstart
 
-Sie finden in diesem Ordner bereits einen Unterordner namens `dist`. Dieser enthält die **fertige Webseite**.
+In diesem Ordner liegt die **fertige Webseite** bereits vor.
 
-1.  Öffnen Sie den Ordner `dist`.
-2.  Kopieren Sie den gesamten Inhalt (die Datei `index.html` und die Ordner `assets/`, `videos/`) auf Ihren Webspace.
-3.  Fertig!
+1.  Kopieren Sie einfach den gesamten Inhalt dieses Ordners (die Datei `index.html` und die Ordner `assets/`, `videos/`, `courses.js`) auf Ihren Webspace.
+2.  Fertig!
 
 ## Bearbeiten der Kursinhalte (ohne Neu-Erstellen)
 
-Im Ordner `dist` finden Sie eine Datei namens `courses.js`. In dieser Datei sind alle Kurse, Lektionen und Fragen gespeichert.
+Im Hauptverzeichnis finden Sie eine Datei namens `courses.js`. In dieser Datei sind alle Kurse, Lektionen und Fragen gespeichert.
 
 *   Sie können diese Datei mit jedem Texteditor öffnen und bearbeiten.
 *   Sie können Texte ändern, neue Lektionen hinzufügen oder Video-Links anpassen.
@@ -21,6 +20,6 @@ Im Ordner `dist` finden Sie eine Datei namens `courses.js`. In dieser Datei sind
 
 ## Hinweise
 
-*   **Kein Server nötig:** Die Dateien im `dist`-Ordner laufen überall.
-*   **Videos:** Videos aus `public/videos/` landen automatisch in `dist/videos/`.
+*   **Kein Server nötig:** Die Dateien laufen überall.
+*   **Videos:** Videos legen Sie direkt in den Ordner `videos/` ab.
 *   **Hash-URLs:** Die Adressen enthalten ein `#` (z.B. `/#/dashboard`). Das ist normal und notwendig.
