@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
 import { Welcome } from './pages/Welcome';
 import { Dashboard } from './pages/Dashboard';
@@ -8,7 +8,7 @@ import { Certificate } from './pages/Certificate';
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<Welcome />} />
 
@@ -21,7 +21,7 @@ function App() {
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
