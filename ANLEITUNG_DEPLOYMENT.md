@@ -10,13 +10,14 @@ Sie finden in diesem Ordner bereits einen Unterordner namens `dist`. Dieser enth
 2.  Kopieren Sie den gesamten Inhalt (die Datei `index.html` und die Ordner `assets/`, `videos/`) auf Ihren Webspace.
 3.  Fertig!
 
-## Falls Sie Änderungen vornehmen (optional)
+## Bearbeiten der Kursinhalte (ohne Neu-Erstellen)
 
-Wenn Sie den Quellcode (die `.tsx`-Dateien) bearbeiten, müssen Sie die Seite neu erstellen:
+Im Ordner `dist` finden Sie eine Datei namens `courses.js`. In dieser Datei sind alle Kurse, Lektionen und Fragen gespeichert.
 
-1.  Öffnen Sie ein Terminal im Projektordner.
-2.  Führen Sie `npm run build` aus.
-3.  Der Ordner `dist` wird aktualisiert.
+*   Sie können diese Datei mit jedem Texteditor öffnen und bearbeiten.
+*   Sie können Texte ändern, neue Lektionen hinzufügen oder Video-Links anpassen.
+*   Speichern Sie die Datei einfach ab. Wenn Sie die Seite im Browser neu laden, sind die Änderungen sofort sichtbar.
+*   **Sie müssen nichts neu kompilieren.**
 
 ## Hinweise
 
