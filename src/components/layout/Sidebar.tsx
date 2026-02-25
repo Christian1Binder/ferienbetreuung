@@ -76,6 +76,12 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
              <LogOut className="w-5 h-5 text-gray-400 group-hover:text-awo-red" />
              Abmelden
            </button>
+
+           <div className="mt-2 pt-2 border-t border-gray-100 text-center">
+             <Link to="/admin/login" className="text-xs text-gray-400 hover:text-gray-600">
+               Admin Login
+             </Link>
+           </div>
         </div>
       </aside>
     </>
