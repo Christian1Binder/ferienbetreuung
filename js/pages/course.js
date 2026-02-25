@@ -1,8 +1,7 @@
 // Course Page
-import { useStore } from '../store.js';
+import store from '../store.js';
 
 export function CourseView({ id }) {
-    const store = useStore();
     const { courses, user } = store.getState();
     const course = courses.find(c => c.id === id);
 

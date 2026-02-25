@@ -9,7 +9,7 @@ import { renderModuleEditor } from './pages/admin/module_editor.js';
 import { renderLessonEditor } from './pages/admin/lesson_editor.js';
 import { renderWelcome } from './pages/welcome.js';
 import { renderCertificate } from './pages/certificate.js';
-import { useStore } from './store.js';
+import store from './store.js';
 
 const routes = {
     '/': renderWelcome,
@@ -37,7 +37,6 @@ function handleRoute() {
     const [path, query] = hash.split('?');
 
     // Check Auth
-    const store = useStore();
     const { user, isAdmin } = store.getState();
 
     // Route Guards

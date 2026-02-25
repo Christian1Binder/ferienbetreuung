@@ -1,10 +1,8 @@
 // Sidebar Component
-import { useStore } from '../store.js';
+import store from '../store.js';
 
 export function Sidebar() {
-    const store = useStore();
-    const { logout, user } = store.getState();
-    const router = useStore(); // Actually router is global event, navigate via hash
+    const { user } = store.getState();
 
     const navItems = [
         { label: 'Dashboard', icon: 'layout-dashboard', path: '#/dashboard' },
@@ -16,9 +14,6 @@ export function Sidebar() {
 
     const el = document.createElement('aside');
     el.className = 'w-64 bg-white border-r border-gray-200 hidden lg:flex flex-col fixed inset-y-0 left-0 pt-16 z-0';
-
-    // Add mobile toggle logic in Header or Layout... for now sticking to desktop sidebar style for simplicity or handling responsive in CSS
-    // Let's make it simpler: Just the nav
 
     el.innerHTML = `
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">

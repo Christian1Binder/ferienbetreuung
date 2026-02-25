@@ -1,10 +1,9 @@
 import { initRouter } from './router.js';
-import { useStore } from './store.js';
+import store from './store.js';
 
 // Entry Point
 document.addEventListener('DOMContentLoaded', async () => {
     // 1. Initialize Store (load from courses.js and SessionStorage)
-    const store = useStore();
     await store.init();
 
     // 2. Initialize Router

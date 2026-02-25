@@ -1,8 +1,7 @@
-import { useStore } from '../../store.js';
+import store from '../../store.js';
 import { AdminLayout } from './layout.js';
 
 export function AdminDashboard() {
-    const store = useStore();
     const { courses } = store.getState();
 
     const el = document.createElement('div');
@@ -93,6 +92,8 @@ export function AdminDashboard() {
                 const id = e.currentTarget.dataset.id;
                 if (confirm('Möchten Sie diesen Kurs wirklich löschen?')) {
                     store.deleteCourse(id);
+                    // Force rerender or reload
+                    window.location.reload();
                 }
             });
         });

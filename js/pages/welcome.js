@@ -1,4 +1,6 @@
 // Welcome Page
+import store from '../store.js';
+
 export function Welcome() {
     const el = document.createElement('div');
     el.className = 'min-h-screen flex items-center justify-center bg-gray-50 p-4';
@@ -39,10 +41,8 @@ export function Welcome() {
                 const facility = formData.get('facility').trim();
 
                 if (name) {
-                    import('../store.js').then(({ useStore }) => {
-                        useStore().login(name, facility);
-                        window.location.hash = '#/dashboard';
-                    });
+                    store.login(name, facility);
+                    window.location.hash = '#/dashboard';
                 }
             });
         }
