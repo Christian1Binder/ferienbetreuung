@@ -7,6 +7,12 @@ import { Dashboard } from './pages/Dashboard';
 import { CourseView } from './pages/CourseView';
 import { LessonView } from './pages/LessonView';
 import { Certificate } from './pages/Certificate';
+import { AdminLogin } from './pages/admin/AdminLogin';
+import { AdminLayout } from './components/layout/AdminLayout';
+import { AdminDashboard } from './pages/admin/AdminDashboard';
+import { CourseEditor } from './pages/admin/CourseEditor';
+import { ModuleEditor } from './pages/admin/ModuleEditor';
+import { LessonEditor } from './pages/admin/LessonEditor';
 
 function App() {
   const fetchCourses = useAppStore((state) => state.fetchCourses);
@@ -37,6 +43,16 @@ function App() {
           <Route path="/course/:courseId" element={<CourseView />} />
           <Route path="/course/:courseId/lesson/:lessonId" element={<LessonView />} />
           <Route path="/certificate" element={<Certificate />} />
+        </Route>
+
+        {/* Admin Routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Navigate to="/admin/dashboard" replace />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="course/:courseId" element={<CourseEditor />} />
+          <Route path="course/:courseId/module/:moduleId" element={<ModuleEditor />} />
+          <Route path="course/:courseId/module/:moduleId/lesson/:lessonId" element={<LessonEditor />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
