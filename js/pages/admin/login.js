@@ -1,4 +1,4 @@
-import { useStore } from '../store.js';
+import store from '../../store.js';
 
 export function AdminLogin() {
     const el = document.createElement('div');
@@ -31,7 +31,6 @@ export function AdminLogin() {
             e.preventDefault();
             const formData = new FormData(e.target);
             const password = formData.get('password');
-            const store = useStore();
 
             if (store.loginAdmin(password)) {
                 window.location.hash = '#/admin/dashboard';

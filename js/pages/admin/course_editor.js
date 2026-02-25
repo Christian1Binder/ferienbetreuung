@@ -1,8 +1,7 @@
-import { useStore } from '../../store.js';
+import store from '../../store.js';
 import { AdminLayout } from './layout.js';
 
 export function CourseEditor({ id }) {
-    const store = useStore();
     const { courses } = store.getState();
     const course = courses.find(c => c.id === id);
 

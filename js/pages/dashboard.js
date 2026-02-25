@@ -1,8 +1,7 @@
 // Dashboard Page
-import { useStore } from '../store.js';
+import store from '../store.js';
 
 export function Dashboard() {
-    const store = useStore();
     const { user, courses } = store.getState();
 
     const el = document.createElement('div');

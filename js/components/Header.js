@@ -1,8 +1,7 @@
 // Header Component
-import { useStore } from '../store.js';
+import store from '../store.js';
 
 export function Header() {
-    const store = useStore();
     const user = store.getState().user;
 
     const el = document.createElement('header');

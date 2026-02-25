@@ -1,8 +1,7 @@
 // Certificate Page
-import { useStore } from '../store.js';
+import store from '../store.js';
 
 export function Certificate() {
-    const store = useStore();
     const { user, courses } = store.getState();
     const course = courses[0]; // Assuming one for now or loop
 

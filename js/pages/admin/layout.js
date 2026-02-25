@@ -1,8 +1,7 @@
 // Layout Wrapper for Admin
-import { useStore } from '../../store.js';
+import store from '../../store.js';
 
 export function AdminLayout(content) {
-    const store = useStore();
     const { isAdmin } = store.getState();
 
     if (!isAdmin) {
