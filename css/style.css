@@ -1,0 +1,7 @@
+/* Custom styles if needed, mostly using Tailwind CDN */
+body {
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+.quiz-option:checked + label {
+    @apply border-awo-red bg-red-50 text-awo-red;
+}
