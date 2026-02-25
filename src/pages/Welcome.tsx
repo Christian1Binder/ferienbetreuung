@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAppStore } from '../store/useAppStore';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
@@ -47,6 +47,12 @@ export function Welcome() {
             Starten
           </Button>
         </form>
+
+        <div className="mt-8 text-center border-t pt-4 text-sm text-gray-500">
+          <Link to="/admin/login" className="hover:text-awo-red hover:underline transition-colors">
+            Admin Login
+          </Link>
+        </div>
       </Card>
     </div>
   );
