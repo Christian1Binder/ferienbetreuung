@@ -57,9 +57,28 @@ export function LessonEditor({ id, moduleId, lessonId }) {
         const container = el.querySelector('#quiz-container');
         container.innerHTML = '';
 
-        if (!lesson.quiz || lesson.quiz.questions.length === 0) {
-            container.innerHTML = '<p class="text-gray-500 italic">Kein Quiz oder keine Fragen vorhanden.</p>';
+        if (!lesson.quiz) {
+            container.innerHTML = `
+                <div class="text-center p-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                    <p class="text-gray-500 mb-4">Noch kein Quiz für diese Lektion.</p>
+                    <button id="create-quiz-btn" class="px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-awo-red">
+                        Quiz erstellen
+                    </button>
+                </div>
+            `;
+            container.querySelector('#create-quiz-btn').addEventListener('click', () => {
+                store.updateLesson(course.id, module.id, lesson.id, {
+                    quiz: { id: `quiz-${lesson.id}`, title: 'Quiz', questions: [], passingScore: 1 }
+                });
+                // Re-render handled by update
+                renderQuiz();
+            });
             return;
+        }
+
+        if (lesson.quiz.questions.length === 0) {
+             container.innerHTML = '<p class="text-gray-500 italic mb-4">Noch keine Fragen vorhanden. Nutzen Sie den Button oben rechts.</p>';
+             // We continue to render score settings even if no questions
         }
 
         const scoreDiv = document.createElement('div');
