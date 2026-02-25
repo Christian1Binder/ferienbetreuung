@@ -1,30 +1,50 @@
-# AWO Schulungsplattform
+# AWO Schulungsplattform (Full Stack PHP/MySQL)
 
-Dies ist eine einfache, webbasierte Schulungsplattform, die ohne Node.js oder Build-Prozesse auskommt. Sie läuft auf jedem Standard-Webserver (Apache, Nginx, etc.) mit PHP-Unterstützung.
+Dies ist eine webbasierte Schulungsplattform mit vollwertiger Datenbank-Anbindung.
 
-## Installation / Deployment
+## Voraussetzungen
 
-1.  **Dateien hochladen:** Laden Sie den gesamten Ordnerinhalt auf Ihren Webspace hoch.
-2.  **Berechtigungen:** Stellen Sie sicher, dass die Datei `courses.js` vom Webserver beschrieben werden kann (z.B. CHMOD 664 oder 666, abhängig von Ihrer Serverkonfiguration), damit der Admin-Bereich Änderungen speichern kann.
-3.  **Fertig:** Rufen Sie die URL Ihrer Seite auf.
+*   Webserver (Apache/Nginx)
+*   PHP 8.0+
+*   MySQL / MariaDB Datenbank
+
+## Installation
+
+1.  **Dateien hochladen:**
+    Laden Sie den gesamten Ordnerinhalt auf Ihren Webspace.
+
+2.  **Datenbank einrichten:**
+    *   Erstellen Sie eine neue MySQL-Datenbank.
+    *   Importieren Sie die Datei `schema.sql` in diese Datenbank (z.B. via phpMyAdmin).
+
+3.  **Konfiguration:**
+    *   Öffnen Sie `api/config.php`.
+    *   Tragen Sie Ihre Datenbank-Zugangsdaten ein:
+        ```php
+        define('DB_HOST', 'localhost');
+        define('DB_NAME', 'ihre_datenbank');
+        define('DB_USER', 'ihr_benutzer');
+        define('DB_PASS', 'ihr_passwort');
+        ```
+
+4.  **Starten:**
+    Rufen Sie die URL Ihrer Installation auf.
 
 ## Admin-Zugang
 
-*   **URL:** `#/admin/login` (oder über den Link "Admin Login" im Footer der Startseite/Sidebar).
-*   **Passwort:** `admin` (Standard).
-    *   *Sicherheitshinweis:* Ändern Sie das Passwort in `js/store.js` (Funktion `loginAdmin`) und idealerweise auch in `api/save_courses.php` (dort ist aktuell kein Passwortschutz implementiert, nur im Frontend!). Für den produktiven Einsatz wird empfohlen, das Verzeichnis `api/` oder die Datei `save_courses.php` zusätzlich per `.htaccess` oder Serverseitig abzusichern.
+*   **URL:** `#/admin/login`
+*   **Passwort:** `admin` (Standard, änderbar in `js/store.js` -> `loginAdmin`).
 
-## Funktionsweise
+## Architektur
 
-*   **Frontend:** HTML, Tailwind CSS (via CDN), Vanilla JavaScript (ES Modules).
-*   **Daten:** Die Kursinhalte liegen in der Datei `courses.js`. Diese wird beim Start geladen.
-*   **Speichern:** Änderungen im Admin-Bereich werden an `api/save_courses.php` gesendet, welches die `courses.js` Datei überschreibt. Sollte dies fehlschlagen (z.B. keine Schreibrechte oder kein PHP), wird ein Download der Datei angeboten, die Sie dann manuell per FTP hochladen können.
+*   **Frontend:** Vanilla JS (ES Modules), Tailwind CSS (CDN).
+*   **Backend:** PHP (API unter `/api/`), PDO, JSON Responses.
+*   **Datenbank:** MySQL.
 
-## Ordnerstruktur
+## Entwicklung
 
-*   `index.html`: Startseite.
-*   `courses.js`: Datenbank für Kurse, Module und Lektionen.
-*   `js/`: JavaScript-Logik (Store, Router, Komponenten).
-*   `api/`: Backend-Skripte (PHP).
-*   `css/`: Eigene Styles.
-*   `videos/`: Speicherort für lokale Videos.
+Lokal testen mit PHP Built-in Server:
+```bash
+php -S localhost:8000
+```
+(Beachten Sie, dass Sie trotzdem einen laufenden MySQL-Server benötigen und `api/config.php` anpassen müssen).

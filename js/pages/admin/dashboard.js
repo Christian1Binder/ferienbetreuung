@@ -15,10 +15,6 @@ export function AdminDashboard() {
             <p class="text-gray-600">Verwalten Sie hier Ihre Kurse und Inhalte.</p>
         </div>
         <div class="flex gap-2">
-            <button id="save-btn" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-                <i data-lucide="save" class="w-4 h-4"></i>
-                Speichern
-            </button>
             <button id="add-course-btn" class="flex items-center gap-2 px-4 py-2 bg-awo-red text-white rounded-md hover:bg-awo-dark transition-colors">
                 <i data-lucide="plus" class="w-4 h-4"></i>
                 Neuer Kurs
@@ -26,11 +22,6 @@ export function AdminDashboard() {
         </div>
     `;
     el.appendChild(header);
-
-    const feedback = document.createElement('div');
-    feedback.id = 'save-feedback';
-    feedback.className = 'hidden p-4 rounded-md';
-    el.appendChild(feedback);
 
     const list = document.createElement('div');
     list.className = 'grid gap-4';
@@ -76,62 +67,36 @@ export function AdminDashboard() {
 
     // Event Listeners
     setTimeout(() => {
-        el.querySelector('#add-course-btn').addEventListener('click', () => {
-            const newId = `course-${Date.now()}`;
-            store.addCourse({
-                id: newId,
+        el.querySelector('#add-course-btn').addEventListener('click', async () => {
+            const btn = el.querySelector('#add-course-btn');
+            btn.disabled = true;
+            btn.innerHTML = '...';
+
+            // Send empty data to create default
+            const res = await store.addCourse({
                 title: 'Neuer Kurs',
-                description: 'Beschreibung hier eingeben...',
-                modules: []
+                description: 'Beschreibung hier eingeben...'
             });
-            window.location.hash = `#/admin/course/${newId}`;
+
+            if (res.success && res.data && res.data.id) {
+                window.location.hash = `#/admin/course/${res.data.id}`;
+            } else {
+                alert('Fehler beim Erstellen: ' + (res.error || 'Unbekannt'));
+                btn.disabled = false;
+                btn.innerHTML = '<i data-lucide="plus" class="w-4 h-4"></i> Neuer Kurs';
+            }
         });
 
         el.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', async (e) => {
                 const id = e.currentTarget.dataset.id;
                 if (confirm('Möchten Sie diesen Kurs wirklich löschen?')) {
-                    store.deleteCourse(id);
-                    // Force rerender or reload
+                    await store.deleteCourse(id);
+                    // Store reload handled in deleteCourse, UI update via reactive render?
+                    // Since router isn't fully reactive, we force reload
                     window.location.reload();
                 }
             });
-        });
-
-        el.querySelector('#save-btn').addEventListener('click', async () => {
-            const btn = el.querySelector('#save-btn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<div class="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></div> Speicher...';
-            btn.disabled = true;
-
-            const result = await store.saveCoursesToServer();
-
-            feedback.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800', 'bg-yellow-100', 'text-yellow-800');
-
-            if (result.success) {
-                feedback.classList.add('bg-green-100', 'text-green-800');
-                feedback.innerText = result.message;
-            } else {
-                if (result.fallback) {
-                     feedback.classList.add('bg-yellow-100', 'text-yellow-800');
-                     feedback.innerHTML = `
-                        <p><strong>Server-Speicherung fehlgeschlagen:</strong> ${result.message}</p>
-                        <p class="mt-2">Laden Sie die Datei manuell herunter:</p>
-                        <button id="download-fallback" class="mt-2 bg-gray-800 text-white px-3 py-1 rounded text-sm hover:bg-black">courses.js herunterladen</button>
-                     `;
-                     setTimeout(() => {
-                         document.getElementById('download-fallback')?.addEventListener('click', () => {
-                             store.downloadCoursesFile();
-                         });
-                     }, 0);
-                } else {
-                    feedback.classList.add('bg-red-100', 'text-red-800');
-                    feedback.innerText = 'Fehler: ' + result.message;
-                }
-            }
-
-            btn.innerHTML = originalText;
-            btn.disabled = false;
         });
     }, 0);
 

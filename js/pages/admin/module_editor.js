@@ -63,30 +63,20 @@ export function ModuleEditor({ id, moduleId }) {
         const titleInput = el.querySelector('#module-title');
         titleInput.addEventListener('change', (e) => store.updateModule(course.id, module.id, { title: e.target.value }));
 
-        el.querySelector('#add-lesson-btn').addEventListener('click', () => {
-            const newId = `lesson-${Date.now()}`;
-            store.addLesson(course.id, module.id, {
-                id: newId,
-                title: 'Neue Lektion',
-                description: '',
-                content: '',
-                videoUrl: '',
-                order: module.lessons.length + 1,
-                quiz: {
-                    id: `quiz-${newId}`,
-                    title: 'Quiz',
-                    questions: [],
-                    passingScore: 1
-                }
+        el.querySelector('#add-lesson-btn').addEventListener('click', async () => {
+            const res = await store.addLesson(course.id, module.id, {
+                title: 'Neue Lektion'
             });
-            window.location.hash = `#/admin/course/${course.id}/module/${module.id}/lesson/${newId}`;
+            if (res.success && res.data && res.data.id) {
+                window.location.hash = `#/admin/course/${course.id}/module/${module.id}/lesson/${res.data.id}`;
+            }
         });
 
         el.querySelectorAll('.delete-lesson-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', async (e) => {
                 const lessonId = e.currentTarget.dataset.id;
                 if (confirm('Lektion löschen?')) {
-                    store.deleteLesson(course.id, module.id, lessonId);
+                    await store.deleteLesson(course.id, module.id, lessonId);
                     window.location.reload();
                 }
             });
