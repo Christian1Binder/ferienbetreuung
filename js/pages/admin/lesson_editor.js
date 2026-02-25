@@ -66,19 +66,31 @@ export function LessonEditor({ id, moduleId, lessonId }) {
                     </button>
                 </div>
             `;
-            container.querySelector('#create-quiz-btn').addEventListener('click', () => {
-                store.updateLesson(course.id, module.id, lesson.id, {
-                    quiz: { id: `quiz-${lesson.id}`, title: 'Quiz', questions: [], passingScore: 1 }
+            container.querySelector('#create-quiz-btn').addEventListener('click', async () => {
+                // To create quiz, we just update the lesson passing score which get_courses interprets as having a quiz?
+                // No, we need questions. `save_lesson` only saves title/content/score.
+                // We need to add a dummy question or just reload UI?
+                // Actually `get_courses` builds quiz object if `lessonQuestions` exist OR `quiz_passing_score` > 0 ?
+                // My logic in `get_courses.php`: `if (isset($lessonQuestions[$l['id']]) && count > 0)` -> creates quiz object.
+                // So creating a quiz effectively means adding a first question.
+                // OR we relax `get_courses.php` to return empty quiz if passing score is set?
+                // Let's modify `store.saveQuestion` to handle creating the first question.
+
+                // For now, let's allow adding a question directly.
+                // UI says "Quiz erstellen" -> Add first question.
+
+                await store.saveQuestion(lesson.id, {
+                    text: 'Neue Frage',
+                    type: 'single-choice',
+                    answers: []
                 });
-                // Re-render handled by update
-                renderQuiz();
+                // Reload handled by saveQuestion
             });
             return;
         }
 
         if (lesson.quiz.questions.length === 0) {
-             container.innerHTML = '<p class="text-gray-500 italic mb-4">Noch keine Fragen vorhanden. Nutzen Sie den Button oben rechts.</p>';
-             // We continue to render score settings even if no questions
+             container.innerHTML = '<p class="text-gray-500 italic mb-4">Noch keine Fragen vorhanden.</p>';
         }
 
         const scoreDiv = document.createElement('div');
@@ -89,7 +101,7 @@ export function LessonEditor({ id, moduleId, lessonId }) {
         `;
         scoreDiv.querySelector('input').addEventListener('change', (e) => {
              store.updateLesson(course.id, module.id, lesson.id, {
-                 quiz: { ...lesson.quiz, passingScore: parseInt(e.target.value) || 0 }
+                 quiz: { passingScore: parseInt(e.target.value) || 0 }
              });
         });
         container.appendChild(scoreDiv);
@@ -111,7 +123,7 @@ export function LessonEditor({ id, moduleId, lessonId }) {
                             </select>
                         </div>
                     </div>
-                    <button class="delete-question-btn text-red-600 hover:bg-red-50 p-2 rounded-md transition-colors ml-4">
+                    <button class="delete-question-btn text-red-600 hover:bg-red-50 p-2 rounded-md transition-colors ml-4" data-id="${question.id}">
                         <i data-lucide="trash-2" class="w-4 h-4"></i>
                     </button>
                 </div>
@@ -140,18 +152,28 @@ export function LessonEditor({ id, moduleId, lessonId }) {
                     </button>
                 `;
 
-                // Answer events
+                // Answer events logic:
+                // We need to save the whole question structure on change.
+                // Helper to get current structure and update it.
+
+                const getUpdatedAnswers = () => {
+                    // This is tricky because DOM inputs might not match state if we rely on `question.answers`.
+                    // But we are rendering from state.
+                    // Let's modify the local answer object and save.
+                    return question.answers;
+                };
+
                 aRow.querySelector('.answer-correct').addEventListener('change', (e) => {
-                    const newAnswers = question.answers.map(a => a.id === answer.id ? { ...a, isCorrect: e.target.checked } : a);
-                    updateQuestion(question.id, { answers: newAnswers });
+                    answer.isCorrect = e.target.checked;
+                    saveQuestionData(question);
                 });
                 aRow.querySelector('.answer-text').addEventListener('change', (e) => {
-                    const newAnswers = question.answers.map(a => a.id === answer.id ? { ...a, text: e.target.value } : a);
-                    updateQuestion(question.id, { answers: newAnswers });
+                    answer.text = e.target.value;
+                    saveQuestionData(question);
                 });
                 aRow.querySelector('.delete-answer-btn').addEventListener('click', () => {
-                    const newAnswers = question.answers.filter(a => a.id !== answer.id);
-                    updateQuestion(question.id, { answers: newAnswers });
+                    question.answers = question.answers.filter(a => a.id !== answer.id);
+                    saveQuestionData(question);
                 });
 
                 answersList.appendChild(aRow);
@@ -159,19 +181,23 @@ export function LessonEditor({ id, moduleId, lessonId }) {
 
             // Question events
             qCard.querySelector('.question-text').addEventListener('change', (e) => {
-                updateQuestion(question.id, { text: e.target.value });
+                question.text = e.target.value;
+                saveQuestionData(question);
             });
             qCard.querySelector('.question-type').addEventListener('change', (e) => {
-                updateQuestion(question.id, { type: e.target.value });
+                question.type = e.target.value;
+                saveQuestionData(question);
             });
-            qCard.querySelector('.delete-question-btn').addEventListener('click', () => {
-                const newQuestions = lesson.quiz.questions.filter(q => q.id !== question.id);
-                updateQuiz({ questions: newQuestions });
+            qCard.querySelector('.delete-question-btn').addEventListener('click', async (e) => {
+                const qId = e.currentTarget.dataset.id;
+                if (confirm('Frage löschen?')) {
+                    await store.deleteQuestion(qId);
+                    // Reload happens automatically
+                }
             });
             qCard.querySelector('.add-answer-btn').addEventListener('click', () => {
-                const newAnswer = { id: `a-${Date.now()}`, text: 'Neue Antwort', isCorrect: false };
-                const newAnswers = [...question.answers, newAnswer];
-                updateQuestion(question.id, { answers: newAnswers });
+                question.answers.push({ text: 'Neue Antwort', isCorrect: false });
+                saveQuestionData(question);
             });
 
             container.appendChild(qCard);
@@ -180,17 +206,10 @@ export function LessonEditor({ id, moduleId, lessonId }) {
         if (window.lucide) window.lucide.createIcons();
     }
 
-    // Helper to update quiz
-    function updateQuiz(updates) {
-         store.updateLesson(course.id, module.id, lesson.id, {
-             quiz: { ...lesson.quiz, ...updates }
-         });
-         renderQuiz(); // Re-render local part
-    }
-
-    function updateQuestion(qId, updates) {
-        const newQuestions = lesson.quiz.questions.map(q => q.id === qId ? { ...q, ...updates } : q);
-        updateQuiz({ questions: newQuestions });
+    async function saveQuestionData(question) {
+        // question object matches JS structure. API expects { lesson_id, id, text, type, answers }
+        // JS structure: { id, text, type, answers: [{id, text, isCorrect}] }
+        await store.saveQuestion(lesson.id, question);
     }
 
     setTimeout(() => {
@@ -199,22 +218,12 @@ export function LessonEditor({ id, moduleId, lessonId }) {
         el.querySelector('#lesson-video').addEventListener('change', (e) => store.updateLesson(course.id, module.id, lesson.id, { videoUrl: e.target.value }));
         el.querySelector('#lesson-content').addEventListener('change', (e) => store.updateLesson(course.id, module.id, lesson.id, { content: e.target.value }));
 
-        el.querySelector('#add-question-btn').addEventListener('click', () => {
-            if (!lesson.quiz) {
-                store.updateLesson(course.id, module.id, lesson.id, {
-                    quiz: { id: `quiz-${lesson.id}`, title: 'Quiz', questions: [], passingScore: 1 }
-                });
-                // After creating quiz, we need to fetch the updated lesson object before adding question
-                // But simplified: Just add question to empty array if we know it's new
-                // For safety, let's just trigger update with new quiz AND new question
-                 const newQuestion = { id: `q-${Date.now()}`, text: 'Neue Frage', type: 'single-choice', answers: [] };
-                 store.updateLesson(course.id, module.id, lesson.id, {
-                    quiz: { id: `quiz-${lesson.id}`, title: 'Quiz', questions: [newQuestion], passingScore: 1 }
-                });
-            } else {
-                const newQuestion = { id: `q-${Date.now()}`, text: 'Neue Frage', type: 'single-choice', answers: [] };
-                updateQuiz({ questions: [...lesson.quiz.questions, newQuestion] });
-            }
+        el.querySelector('#add-question-btn').addEventListener('click', async () => {
+            await store.saveQuestion(lesson.id, {
+                text: 'Neue Frage',
+                type: 'single-choice',
+                answers: []
+            });
         });
 
         renderQuiz();

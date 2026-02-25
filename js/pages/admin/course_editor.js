@@ -69,21 +69,20 @@ export function CourseEditor({ id }) {
         titleInput.addEventListener('change', (e) => store.updateCourse(course.id, { title: e.target.value }));
         descInput.addEventListener('change', (e) => store.updateCourse(course.id, { description: e.target.value }));
 
-        el.querySelector('#add-module-btn').addEventListener('click', () => {
-            const newId = `module-${Date.now()}`;
-            store.addModule(course.id, {
-                id: newId,
-                title: 'Neues Modul',
-                lessons: []
+        el.querySelector('#add-module-btn').addEventListener('click', async () => {
+            const res = await store.addModule(course.id, {
+                title: 'Neues Modul'
             });
-            window.location.hash = `#/admin/course/${course.id}/module/${newId}`;
+            if (res.success && res.data && res.data.id) {
+                window.location.hash = `#/admin/course/${course.id}/module/${res.data.id}`;
+            }
         });
 
         el.querySelectorAll('.delete-module-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', async (e) => {
                 const moduleId = e.currentTarget.dataset.id;
                 if (confirm('Modul löschen?')) {
-                    store.deleteModule(course.id, moduleId);
+                    await store.deleteModule(course.id, moduleId);
                     window.location.reload();
                 }
             });
