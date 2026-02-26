@@ -1,5 +1,6 @@
 import store from '../../store.js';
 import { AdminLayout } from './layout.js';
+import { escapeHTML } from '../../utils.js';
 
 export function ModuleEditor({ id, moduleId }) {
     const { courses } = store.getState();
@@ -14,18 +15,24 @@ export function ModuleEditor({ id, moduleId }) {
     el.className = 'space-y-6';
 
     el.innerHTML = `
-        <div class="flex items-center gap-4">
-            <a href="#/admin/course/${course.id}" class="flex items-center gap-2 text-gray-600 hover:text-gray-900 text-sm font-medium">
-                <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                Zurück zum Kurs
-            </a>
-            <h2 class="text-2xl font-bold text-gray-900">Modul bearbeiten</h2>
+        <div class="flex items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <a href="#/admin/course/${course.id}" class="flex items-center gap-2 text-gray-600 hover:text-gray-900 text-sm font-medium">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    Zurück zum Kurs
+                </a>
+                <h2 class="text-2xl font-bold text-gray-900">Modul bearbeiten</h2>
+            </div>
+            <button id="save-module-btn" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors shadow-sm">
+                <i data-lucide="save" class="w-4 h-4"></i>
+                Speichern
+            </button>
         </div>
 
         <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-4">
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Titel</label>
-                <input type="text" id="module-title" value="${module.title}" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-awo-red focus:border-awo-red">
+                <input type="text" id="module-title" value="${escapeHTML(module.title)}" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-awo-red focus:border-awo-red">
             </div>
         </div>
 
@@ -42,8 +49,8 @@ export function ModuleEditor({ id, moduleId }) {
             ${module.lessons.map((lesson, idx) => `
                 <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex items-center justify-between">
                     <div>
-                        <h4 class="font-medium text-gray-900">${lesson.title}</h4>
-                        <p class="text-sm text-gray-500">${lesson.description || 'Keine Beschreibung'}</p>
+                        <h4 class="font-medium text-gray-900">${escapeHTML(lesson.title)}</h4>
+                        <p class="text-sm text-gray-500">${escapeHTML(lesson.description || 'Keine Beschreibung')}</p>
                     </div>
                     <div class="flex gap-2">
                         <a href="#/admin/course/${course.id}/module/${module.id}/lesson/${lesson.id}" class="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50 text-sm font-medium text-gray-700 transition-colors">
@@ -61,7 +68,35 @@ export function ModuleEditor({ id, moduleId }) {
 
     setTimeout(() => {
         const titleInput = el.querySelector('#module-title');
-        titleInput.addEventListener('change', (e) => store.updateModule(course.id, module.id, { title: e.target.value }));
+        const saveBtn = el.querySelector('#save-module-btn');
+
+        saveBtn.addEventListener('click', async () => {
+            const originalText = saveBtn.innerHTML;
+            saveBtn.innerHTML = 'Speichern...';
+            saveBtn.disabled = true;
+
+            const res = await store.updateModule(course.id, module.id, {
+                title: titleInput.value
+            });
+
+            if (res.success) {
+                saveBtn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Gespeichert';
+                saveBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                saveBtn.classList.add('bg-green-600', 'hover:bg-green-700');
+                setTimeout(() => {
+                    saveBtn.innerHTML = originalText;
+                    saveBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                    saveBtn.classList.remove('bg-green-600', 'hover:bg-green-700');
+                    saveBtn.disabled = false;
+                    if(window.lucide) window.lucide.createIcons();
+                }, 2000);
+            } else {
+                alert('Fehler beim Speichern: ' + res.error);
+                saveBtn.innerHTML = originalText;
+                saveBtn.disabled = false;
+            }
+            if(window.lucide) window.lucide.createIcons();
+        });
 
         el.querySelector('#add-lesson-btn').addEventListener('click', async () => {
             const res = await store.addLesson(course.id, module.id, {

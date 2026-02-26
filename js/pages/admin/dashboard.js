@@ -1,5 +1,6 @@
 import store from '../../store.js';
 import { AdminLayout } from './layout.js';
+import { escapeHTML } from '../../utils.js';
 
 export function AdminDashboard() {
     const { courses } = store.getState();
@@ -38,8 +39,8 @@ export function AdminDashboard() {
             card.className = 'bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4';
             card.innerHTML = `
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900">${course.title}</h3>
-                    <p class="text-sm text-gray-600 line-clamp-1">${course.description}</p>
+                    <h3 class="text-lg font-semibold text-gray-900">${escapeHTML(course.title)}</h3>
+                    <p class="text-sm text-gray-600 line-clamp-1">${escapeHTML(course.description)}</p>
                     <div class="flex items-center gap-4 mt-2 text-xs text-gray-500">
                         <span class="flex items-center gap-1">
                             <i data-lucide="file-json" class="w-3 h-3"></i>
